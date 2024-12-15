@@ -4,7 +4,7 @@
 title = Medmate
 
 # (str) Package name
-package.name = myapp
+package.name = Medmate
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
@@ -37,17 +37,16 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy
-
+requirements = python3,kivy,https://github.com/kivymd/KivyMD/archive/master.zip, materialyoucolor, exceptiongroup, asyncgui, asynckivy, pillow
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+#presplash.filename = %(source.dir)s/p.jpg
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+#icon.filename = %(source.dir)s/L.jpg
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
@@ -67,7 +66,7 @@ orientation = portrait
 osx.python_version = 3
 
 # Kivy version to use
-osx.kivy_version = 1.9.1
+osx.kivy_version = 2.1.0
 
 #
 # Android specific
@@ -136,7 +135,7 @@ fullscreen = 0
 # agreements. This is intended for automation only. If set to False,
 # the default, you will be shown the license when first running
 # buildozer.
-# android.accept_sdk_license = False
+android.accept_sdk_license = True
 
 # (str) Android entry point, default is ok for Kivy-based app
 #android.entrypoint = org.kivy.android.PythonActivity
