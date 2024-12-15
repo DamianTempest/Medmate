@@ -1,0 +1,292 @@
+ScreenManager:
+    PageScreen:
+    NunScreen:
+    LoginScreen:
+    SignUpScreen:
+    HomeScreen:
+    ContactListScreen:
+    PatientProfileScreen:
+    EditPatientScreen:
+    ConversationScreen:
+    ChatScreen:
+<PageScreen>:
+    name:"page"
+    canvas.before:
+        Rectangle:
+            source: "a.jpg"
+            pos: self.pos
+            size: self.size  
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        padding: dp(20)                 
+        Label:
+            text:"Welcome To Medate"
+            font_size: dp(30)
+            bold: True
+            underline:True
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(20)
+            padding: dp(20)
+            Button:
+                background_color: 1, 1, 1, 0.5
+                text:"Patient"
+                size_hint:.3, .3
+                pos_hint:{"center_y":.5}
+                bold: True
+                on_press: app.root.current =  "signup"
+            Button:
+                background_color: 1, 1, 1, 0.5
+                text:"Doctor"
+                size_hint:.3, .3
+                pos_hint:{"center_y":.5}
+                on_press: app.root.current =  "nun"
+            BoxLayout:
+                orientation: "horizontal"
+                spacing: dp(20)
+                padding: dp(20)    
+                Label:
+                    text:"Choose Category"
+                    font_size: sp(24)
+                    pos_hint:{"center_y":.5}
+                    bold: True   
+<NunScreen>:
+    name:"nun"
+    BoxLayout:
+        orientation:"horizontal"
+        spacing: dp(20)
+        padding: dp(20)
+    Bu    
+
+
+<LoginScreen>:
+    name: "login"
+    canvas.before:
+        Rectangle:
+            source: "w.jpg"
+            pos: self.pos
+            size: self.size   
+    BoxLayout:               
+        orientation: "horizontal"
+        spacing: dp(20)
+        padding: dp(20)
+        Button:
+            text: "Back"
+            size_hint_x:0.1
+            size_hint_y:0.1
+            on_press:app.root.current="page"
+        Label:
+            text: "Login to MedMate"
+            font_size: sp(24)
+            bold: True
+            underline:True
+            canvas.before:
+                Color:
+                    rgba:0,0,1,1
+            pos: self.pos
+            size: self.size 
+        BoxLayout:              
+            orientation: "vertical"
+            spacing: dp(20)
+            padding: dp(20)    
+            TextInput:
+                id: email
+                hint_text: "Enter your email"
+            TextInput:
+                id: password
+                hint_text: "Enter your password"
+                password: True
+                multiline: False
+            Button:
+                text: "Login"
+                on_press: app.root.current =  "home"
+            Button:
+                text: "Sign Up"
+                on_press: app.root.current = "signup"
+
+<SignUpScreen>:
+    name: "signup"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.2
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [30]
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        padding: dp(20)
+        TextInput:
+            id: name
+            hint_text: "Full Name"
+        TextInput:
+            id: email
+            hint_text: "Email Address"
+        TextInput:
+            id: password
+            hint_text: "Password"
+            password: True
+        Button:
+            text: "Create Account"
+            on_press: app.root.current = "home"
+
+
+<HomeScreen>:
+    name: "home"
+    canvas.before:
+        Rectangle:
+            source: "e.jpg"
+            pos: self.pos
+            size: self.size 
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+        Button:
+            size_hint_x:0.1
+            size_hint_y:0.1
+            source: "L.jpg"
+            pos: self.pos
+            size: self.size
+        Label:
+            text: "Welcome to MedMate"
+            font_size: sp(24)
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Go to Contact List"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_press: app.root.current = "contact_list"
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Patient Profile"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_release: app.root.current = "patientprofile"
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Editpatient"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_press: app.root.current = "editpatient"
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Conversations"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_press: app.root.current = "conversation"           
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Logout"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_press: app.root.current = "login"
+        
+            
+        
+<ContactListScreen>:
+    name: "contact_list"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        padding: dp(20)
+        Label:
+            text: "Contact List"
+            font_size: sp(24)
+        Button:
+            text: "Dr. Smith - Surgeon"
+            on_press: app.root.current = "chat"
+        Button:
+            text: "Dr. Jane - Dietician"
+            on_press: app.root.current = "chat2"
+        Button:
+            text: "Dr. Joe - Pediatrician"
+            on_press: app.root.current = "chat3"
+        Button:
+            text: "Back"
+            on_press: app.root.current = "home"
+
+<PatientProfileScreen>:
+    name: "patientprofile"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Patient Profile Screen"
+            font_size: 24
+        Button:
+            text: "Back"
+            on_release: app.root.current = "home"
+
+<EditPatientScreen>:
+    name: "editpatient"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Edit Patient Screen"
+            font_size: 24
+        TextInput:
+            hint_text: "Edit patient data..."
+            multiline: False
+        Button:
+            text: "Save Changes"
+        Button:
+            text: "Back to Home"
+            on_release: app.root.current = "home"
+
+<ConversationScreen>:
+    name: "conversation"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        Button:
+            text: "Back"
+            size_hint_x:0.1
+            size_hint_y:0.1
+            on_press:app.root.current="home"
+        Label:
+            text: "Ask a Doctor"
+            font_size: 24
+        ScrollView:
+            TextInput:
+                id: chat_history
+                text: "Chat with the Doctor\n"
+                readonly: True
+                size_hint_y: None
+                height: 300
+        TextInput:
+            id: user_message
+            hint_text: "Enter your query..."
+            multiline: False
+        Button:
+            text: "Send"
+            on_release: root.suggest_medicine(user_message.text)
+
+<ChatScreen>:
+    name: "chat"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(10)
+        Label:
+            text: "Chat with Dr. Smith"
+            font_size: sp(24)
+        Button:
+            text: "Back"
+            size_hint_x:0.1
+            size_hint_y:0.1
+            on_press:app.root.current="contact_list"    
+        ScrollView:
+            Label:
+                id: chat_messages
+                text: "Chat messages will appear here..."
+        BoxLayout:
+            spacing: dp(10)
+            TextInput:
+                id: chat_input
+                hint_text: "Type your message..."
+            Button:
+                text: "Send"
+                on_press: root.send_message()
