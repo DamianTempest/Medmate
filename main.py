@@ -17,6 +17,8 @@ from datetime import datetime
 class PageScreen(Screen):
     pass
 
+class NghtScreen(Screen):
+    pass
 
 class LoginScreen(Screen):
     def validate_login(self):
@@ -116,6 +118,7 @@ class MedMateApp(App):
     def build(self):
         sm = ScreenManager()
         sm.add_widget(PageScreen(name="page"))
+        sm.add_widget(NghtScreen(name="nun"))
         sm.add_widget(LoginScreen(name="login"))
         sm.add_widget(SignUpScreen(name="signup"))
         sm.add_widget(HomeScreen(name="home"))

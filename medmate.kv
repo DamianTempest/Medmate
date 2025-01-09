@@ -1,6 +1,6 @@
 ScreenManager:
     PageScreen:
-    NunScreen:
+    NghtScreen:
     LoginScreen:
     SignUpScreen:
     HomeScreen:
@@ -8,6 +8,7 @@ ScreenManager:
     PatientProfileScreen:
     EditPatientScreen:
     ConversationScreen:
+    TelemedScreen:
     ChatScreen:
 <PageScreen>:
     name:"page"
@@ -51,13 +52,22 @@ ScreenManager:
                     font_size: sp(24)
                     pos_hint:{"center_y":.5}
                     bold: True   
-<NunScreen>:
+<NghtScreen>:
     name:"nun"
     BoxLayout:
         orientation:"horizontal"
         spacing: dp(20)
         padding: dp(20)
-    Bu    
+        Label:
+            text: "Page Under Construction"
+            font_size: sp(24)
+            bold: True
+            underline:True
+        Button:
+            text: "Back"
+            size_hint_x:0.1
+            size_hint_y:0.1
+            on_press:app.root.current="page"
 
 
 <LoginScreen>:
@@ -74,7 +84,7 @@ ScreenManager:
         Button:
             text: "Back"
             size_hint_x:0.1
-            size_hint_y:0.1
+            size_hint_y:0.7
             on_press:app.root.current="page"
         Label:
             text: "Login to MedMate"
@@ -101,6 +111,7 @@ ScreenManager:
             Button:
                 text: "Login"
                 on_press: app.root.current =  "home"
+                
             Button:
                 text: "Sign Up"
                 on_press: app.root.current = "signup"
@@ -108,37 +119,45 @@ ScreenManager:
 <SignUpScreen>:
     name: "signup"
     canvas.before:
-        Color:
-            rgba: 1, 1, 1, 0.2
-        RoundedRectangle:
+        Rectangle:
+            source: "w.jpg"
             pos: self.pos
             size: self.size
-            radius: [30]
-
     BoxLayout:
         orientation: "vertical"
         spacing: dp(20)
         padding: dp(20)
-        TextInput:
-            id: name
-            hint_text: "Full Name"
-        TextInput:
-            id: email
-            hint_text: "Email Address"
-        TextInput:
-            id: password
-            hint_text: "Password"
-            password: True
-        Button:
-            text: "Create Account"
-            on_press: app.root.current = "home"
+        BoxLayout:              
+            orientation: "vertical"
+            spacing: dp(20)
+            padding: dp(20) 
+            TextInput:
+                id: name
+                hint_text: "First Name"
+            TextInput:
+                id: name
+                hint_text: "Last Name"
+            TextInput:
+                id: email
+                hint_text: "Email Address"
+            TextInput:
+                id: password
+                hint_text: "Password"
+                password: True
+            Button:
+                text: "Create Account"
+                on_press: app.root.current = "home"
+            Button:
+                text: "Login"
+                on_press: app.root.current = "login"   
+
 
 
 <HomeScreen>:
     name: "home"
     canvas.before:
         Rectangle:
-            source: "e.jpg"
+            source: "se.jpg"
             pos: self.pos
             size: self.size 
     BoxLayout:
@@ -154,6 +173,8 @@ ScreenManager:
         Label:
             text: "Welcome to MedMate"
             font_size: sp(24)
+            underline:True
+            
         Button:
             background_color: 1, 1, 1, 0.5
             text: "Go to Contact List"
