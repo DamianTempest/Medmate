@@ -1,14 +1,17 @@
 ScreenManager:
     PageScreen:
-    NghtScreen:
     LoginScreen:
     SignUpScreen:
+    NghtScreen:
+    CommunityScreen:
+    ResearchScreen:
+    NewsScreen:
+    PatientScreen:
     HomeScreen:
     ContactListScreen:
     PatientProfileScreen:
     EditPatientScreen:
-    ConversationScreen:
-    TelemedScreen:
+    SymptomCheckerScreen:
     ChatScreen:
 <PageScreen>:
     name:"page"
@@ -22,10 +25,12 @@ ScreenManager:
         spacing: dp(20)
         padding: dp(20)                 
         Label:
+            color:0, 0, 0
             text:"Welcome To Medate"
             font_size: dp(30)
             bold: True
             underline:True
+            
         BoxLayout:
             orientation: "horizontal"
             spacing: dp(20)
@@ -52,22 +57,6 @@ ScreenManager:
                     font_size: sp(24)
                     pos_hint:{"center_y":.5}
                     bold: True   
-<NghtScreen>:
-    name:"nun"
-    BoxLayout:
-        orientation:"horizontal"
-        spacing: dp(20)
-        padding: dp(20)
-        Label:
-            text: "Page Under Construction"
-            font_size: sp(24)
-            bold: True
-            underline:True
-        Button:
-            text: "Back"
-            size_hint_x:0.1
-            size_hint_y:0.1
-            on_press:app.root.current="page"
 
 
 <LoginScreen>:
@@ -151,7 +140,110 @@ ScreenManager:
                 text: "Login"
                 on_press: app.root.current = "login"   
 
+<NghtScreen>:
+    name:"nun"
+    canvas.before:
+        Rectangle:
+            source: "se.jpg"
+            pos: self.pos
+            size: self.size 
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+        Button:
+            size_hint_x:0.1
+            size_hint_y:0.1
+            source: "L.jpg"
+            pos: self.pos
+            size: self.size
+        Label:
+            text: "Welcome to MedMate"
+            font_size: sp(24)
+            underline:True
+            
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Community"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_press: app.root.current = "Community"
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Research"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_release: app.root.current = "Research"
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "News"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_press: app.root.current = "News"
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Patients"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_press: app.root.current = "Patients"           
+        Button:
+            background_color: 1, 1, 1, 0.5
+            text: "Logout"
+            size_hint: .5,None
+            pos_hint:{"center_x":.5}
+            on_press: app.root.current = "page"
 
+<PatientsScreen>:
+    name: "Patients"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        padding: dp(20)
+        Label:
+            text: "Patients"
+            font_size: sp(24)
+        Button:
+            text: "Mr. Smith"
+            on_press: app.root.current = "chat.1"
+        Button:
+            text: "Mrs. Jane"
+            on_press: app.root.current = "chat.2"
+        Button:
+            text: "Mr. Joe"
+            on_press: app.root.current = "chat.3"
+        Button:
+            text: "Back"
+            on_press: app.root.current = "home"
+
+
+<PatientschatScreen>:
+    name: "chat.1"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(10)
+        Label:
+            text: "Chat with Mr. Smith"
+            font_size: sp(24)
+        Button:
+            text: "Back"
+            size_hint_x:0.1
+            size_hint_y:0.1
+            on_press:app.root.current="contact_list"    
+        ScrollView:
+            Label:
+                id: chat_messages
+                text: "Chat messages will appear here..."
+        BoxLayout:
+            spacing: dp(10)
+            TextInput:
+                id: chat_input
+                hint_text: "Type your message..."
+            Button:
+                text: "Send"
+                on_press: root.send_message()
+
+            
 
 <HomeScreen>:
     name: "home"
@@ -195,10 +287,10 @@ ScreenManager:
             on_press: app.root.current = "editpatient"
         Button:
             background_color: 1, 1, 1, 0.5
-            text: "Conversations"
+            text: "Sympt0ms Checker"
             size_hint: .5,None
             pos_hint:{"center_x":.5}
-            on_press: app.root.current = "conversation"           
+            on_press: app.root.current = "Sym"           
         Button:
             background_color: 1, 1, 1, 0.5
             text: "Logout"
@@ -257,33 +349,42 @@ ScreenManager:
             text: "Back to Home"
             on_release: app.root.current = "home"
 
-<ConversationScreen>:
-    name: "conversation"
+<SymptomCheckerScreen>:
+    name: "sym"
     BoxLayout:
-        orientation: "vertical"
-        spacing: 10
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
         Button:
             text: "Back"
             size_hint_x:0.1
             size_hint_y:0.1
             on_press:app.root.current="home"
+
         Label:
-            text: "Ask a Doctor"
-            font_size: 24
-        ScrollView:
-            TextInput:
-                id: chat_history
-                text: "Chat with the Doctor\n"
-                readonly: True
-                size_hint_y: None
-                height: 300
+            text: "Enter your symptoms (e.g., fever, headache, fatigue):"
+            size_hint_y: None
+            height: dp(30)
+
         TextInput:
-            id: user_message
-            hint_text: "Enter your query..."
-            multiline: False
+            id: symptom_input
+            hint_text: "Type your symptoms here..."
+            multiline: True
+            size_hint_y: 0.4
+
+        ProgressBar:
+            id: progress_bar
+            max: 100
+            value: 0
+            size_hint_y: None
+            height: dp(10)
+
         Button:
-            text: "Send"
-            on_release: root.suggest_medicine(user_message.text)
+            text: "Analyze Symptoms"
+            size_hint_y: None
+            height: dp(50)
+            on_press: root.Analyze_Symptoms(self)
+           
 
 <ChatScreen>:
     name: "chat"

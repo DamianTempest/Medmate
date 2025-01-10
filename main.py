@@ -8,31 +8,51 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.stacklayout import StackLayout
+from kivy.uix.spinner import Spinner
+from kivy.uix.progressbar import ProgressBar
 from kivy.core.window import Window
 from kivy.clock import Clock
 from datetime import datetime
-
+import requests
 
 # Screen Classes
 class PageScreen(Screen):
     pass
 
-class NghtScreen(Screen):
-    pass
-
 class LoginScreen(Screen):
     def validate_login(self):
-        # Example logic for login validation
         email = self.ids.email.text
         password = self.ids.password.text
 
+    def on_focus_email(self, widget):
+        # Clear error message when the user focuses on the email field
+        self.root.ids.error_label.text = ""
+
+    def on_focus_password(self, widget):
+        # Clear error message when the user focuses on the password field
+        self.root.ids.error_label.text = ""
+
+    def login(self, email, password):
+        # Basic input validation
         if not email or not password:
-            print("Email and password cannot be empty.")
-        elif "@" not in email:
-            print("Invalid email address.")
-        else:
-            print("Login successful.")
-            self.manager.current = "home"
+            self.root.ids.error_label.text = "Both fields are required!"
+            return
+
+        # API call for login
+        try:
+            response = requests.post("http://your-api-url.com/login", json={"email": email, "password": password})
+
+            if response.status_code == 200:
+                # Handle successful login (you can navigate to home screen here)
+                self.root.ids.error_label.text = "Login successful!"
+                self.root.current = "home"
+            else:
+                self.root.ids.error_label.text = "Invalid username or password."
+
+        except requests.exceptions.RequestException as e:
+            # Handle network issues
+            self.root.ids.error_label.text = f"Network error: {str(e)}"
+                
 
 class SignUpScreen(Screen):
     def create_account(self):
@@ -47,6 +67,20 @@ class SignUpScreen(Screen):
             print("Account created successfully!")
             self.manager.current = "login"
 
+class NghtScreen(Screen):
+    pass
+
+class CommunityScreen(Screen):
+    pass
+
+class ResearchScreen(Screen):
+    pass
+
+class NewsScreen(Screen):
+    pass
+
+class PatientScreen(Screen):
+    pass
 
 class HomeScreen(Screen):
     pass
@@ -62,6 +96,47 @@ class EditPatientScreen(Screen):
 
 class ContactListScreen(Screen):
     pass
+
+class PatientsScreen(Screen):
+    pass
+
+class PatientschatScreen(Screen):
+    pass
+
+class SymptomCheckerScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+    
+    def Analyze_Symptoms(self, instance):
+        # Ensure we access the correct input field
+        symptoms = self.symptom_input.text.strip()  # Accessing symptom_input here
+        if not symptoms:
+            self.result_label.text = "Please enter your symptoms."
+            return
+        
+        # Update progress bar and show loading
+        self.progress_bar.value = 20
+        self.result_label.text = "Analyzing your symptoms..."
+        
+        try:
+            # Replace with your actual server endpoint
+            response = requests.post(
+                "http://127.0.0.1:5000/check", json={"symptoms": symptoms}, timeout=10
+            )
+
+            # Update progress bar
+            self.progress_bar.value = 60
+
+            if response.status_code == 200:
+                result = response.json()
+                self.result_label.text = result.get("analysis", "No analysis found.")
+            else:
+                self.result_label.text = "Error: Could not connect to server."
+                self.progress_bar.value = 0
+        except requests.exceptions.RequestException as e:
+            self.result_label.text = f"Error: {e}"
+            self.progress_bar.value = 0
+
 class ConversationScreen(Screen):
     def suggest_medicine(self, query):
         print(f"Received query: {query}")
@@ -87,8 +162,12 @@ class ChatScreen(Screen):
 
         message = chat_input.text
         if message.strip():
-            chat_messages.text += f"\nYou: {message}"
+            # Append the message with timestamp
+            chat_messages.text += f"\nYou ({timestamp}): {message}"
             chat_input.text = ""
+
+            # Scroll to the latest message
+            chat_messages.parent.scroll_y = 0
 
 class Chat2Screen(Screen):
     def send_message(self):
@@ -118,9 +197,13 @@ class MedMateApp(App):
     def build(self):
         sm = ScreenManager()
         sm.add_widget(PageScreen(name="page"))
-        sm.add_widget(NghtScreen(name="nun"))
         sm.add_widget(LoginScreen(name="login"))
         sm.add_widget(SignUpScreen(name="signup"))
+        sm.add_widget(NghtScreen(name="nun"))
+        sm.add_widget(CommunityScreen(name="Com"))
+        sm.add_widget(ResearchScreen(name="Res"))
+        sm.add_widget(NewsScreen(name="news"))
+        sm.add_widget(PatientScreen(name="pat"))
         sm.add_widget(HomeScreen(name="home"))
         sm.add_widget(PatientProfileScreen(name="patientprofile"))
         sm.add_widget(EditPatientScreen(name="editpatient"))        
@@ -129,6 +212,9 @@ class MedMateApp(App):
         sm.add_widget(ChatScreen(name="chat"))  # Add the ChatScreen here
         sm.add_widget(Chat2Screen(name="chat2"))
         sm.add_widget(Chat3Screen(name="chat3"))
+        sm.add_widget(PatientsScreen(name="Patients"))
+        sm.add_widget(PatientschatScreen(name="chat.1"))
+        sm.add_widget(SymptomCheckerScreen(name="Sym"))
         return sm
 
 
