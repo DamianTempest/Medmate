@@ -13,59 +13,54 @@ from kivy.uix.progressbar import ProgressBar
 from kivy.core.window import Window
 from kivy.clock import Clock
 from datetime import datetime
+from kivy.uix.spinner import Spinner
+from kivy.uix.popup import Popup
+import random
 import requests
+
 
 # Screen Classes
 class PageScreen(Screen):
     pass
 
+# LoginScreen
 class LoginScreen(Screen):
     def validate_login(self):
-        email = self.ids.email.text
-        password = self.ids.password.text
+        email = self.ids.email.text.strip()
+        password = self.ids.password.text.strip()
 
-    def on_focus_email(self, widget):
-        # Clear error message when the user focuses on the email field
-        self.root.ids.error_label.text = ""
-
-    def on_focus_password(self, widget):
-        # Clear error message when the user focuses on the password field
-        self.root.ids.error_label.text = ""
-
-    def login(self, email, password):
-        # Basic input validation
         if not email or not password:
-            self.root.ids.error_label.text = "Both fields are required!"
+            self.ids.error_label.text = "Both fields are required!"
             return
 
-        # API call for login
-        try:
-            response = requests.post("http://your-api-url.com/login", json={"email": email, "password": password})
+        if "@" not in email:
+            self.ids.error_label.text = "Invalid email format!"
+            return
 
-            if response.status_code == 200:
-                # Handle successful login (you can navigate to home screen here)
-                self.root.ids.error_label.text = "Login successful!"
-                self.root.current = "home"
-            else:
-                self.root.ids.error_label.text = "Invalid username or password."
+        self.ids.error_label.text = "Login successful!"
+        self.manager.current = "home"  # Navigate to HomeScreen
 
-        except requests.exceptions.RequestException as e:
-            # Handle network issues
-            self.root.ids.error_label.text = f"Network error: {str(e)}"
-                
 
+# SignUpScreen
 class SignUpScreen(Screen):
-    def create_account(self):
-        email = self.ids.email.text
-        password = self.ids.password.text
+    def validate_signup(self):
+        email = self.ids.email.text.strip()
+        password = self.ids.password.text.strip()
 
-        if not email and not password:
-            print("All fields are required!")
-        elif "@" not in email:
-            print("Enter a valid email address!")
-        else:
-            print("Account created successfully!")
-            self.manager.current = "login"
+        if not email or not password:
+            self.ids.error_label.text = "All fields are required!"
+            return
+
+        if "@" not in email:
+            self.ids.error_label.text = "Invalid email format!"
+            return
+
+        if len(password) < 6:
+            self.ids.error_label.text = "Password too short!"
+            return
+
+        self.ids.error_label.text = "Sign up successful!"
+        self.manager.current = "home"  # Navigate to LoginScreen
 
 class NghtScreen(Screen):
     pass
@@ -85,6 +80,9 @@ class PatientScreen(Screen):
 class HomeScreen(Screen):
     pass
 
+class ExtraScreen(Screen):   
+    pass
+
 class ContactUsScreen(Screen):
     pass
 
@@ -92,7 +90,35 @@ class PatientProfileScreen(Screen):
     pass
 
 class EditPatientScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def Save_Changes(self, instance):
+        # Get values from the input fields
+        name = self.ids.name_input.text
+        age = self.ids.age_input.text
+        country = self.ids.country_input.text
+        medical_history = self.ids.medical_history_input.text
+        current_medications = self.ids.current_medications_input.text
+        current_activities = self.ids.current_activities_input.text
+
+        # Example: Print the values (replace with actual save logic)
+        print(f"Name: {name}, Age: {age}, Country: {country}")
+        print(f"Medical History: {medical_history}")
+        print(f"Current Medications: {current_medications}")
+        print(f"Current Activities: {current_activities}")
+
+        # Add your save logic here (e.g., update a database or file)
+        # Feedback to the user could also be added
+        
+        # Show success popup after saving
+        popup = Popup(
+            title='Success',
+            content=Label(text='Profile saved successfully!'),
+            size_hint=(None, None),
+            size=(300, 150)
+        )
+        popup.open()
 
 class ContactListScreen(Screen):
     pass
@@ -102,6 +128,93 @@ class PatientsScreen(Screen):
 
 class PatientschatScreen(Screen):
     pass
+
+class SignUpDocScreen(Screen):
+    pass
+
+class LoginDocScreen(Screen):
+    pass
+
+class DieticianScreen(Screen):
+    def generate_suggestion(self):
+        # Get user input from the GUI
+        name = self.ids.name_input.text.strip() or "User"
+        preference = self.ids.preference_spinner.text.lower()
+        allergies = self.ids.allergies_input.text.lower().split(",") if self.ids.allergies_input.text else []
+        goal = self.ids.goal_spinner.text.lower()  # This can be used for further customization later.
+
+        # Meal Database
+        meal_database = {
+            "vegetarian": [
+                {"Eba and Egusi Soup": ["cassava", "egusi", "spinach", "tomatoes", "palm oil"]},
+                {"Jollof Rice with Plantains": ["rice", "tomato", "onion", "bell pepper", "plantains"]},
+                {"Gari Fortor": ["gari", "vegetables", "tomato paste", "onion", "palm oil"]},
+                {"Kontomire Stew": ["cocoyam leaves", "tomato", "onions", "palm oil", "saltfish"]},
+                {"Chibom": ["gari", "tomato paste", "peanut butter", "onion", "avocado"]},
+                {"Fried Plantains with Beans": ["plantains", "beans", "tomatoes", "onions", "spices"]}
+            ],
+            "vegan": [
+                {"Red Red": ["beans", "palm oil", "plantains", "tomato", "onions"]},
+                {"Kelewele": ["ripe plantains", "ginger", "garlic", "chili pepper", "palm oil"]},
+                {"Peanut Soup": ["peanut butter", "tomato", "onion", "spinach", "yams"]},
+                {"Aboboi": ["corn", "beans", "cabbage", "tomatoes", "onions"]},
+                {"Palm Nut Soup": ["palm nuts", "onion", "tomato", "spinach", "yams"]},
+                {"Fried Yam with Pepper Sauce": ["yam", "tomato", "onion", "chilies", "oil"]}
+            ],
+            "keto": [
+                {"Grilled Tilapia with Fufu": ["tilapia", "fufu", "palm oil", "spices"]},
+                {"Omo Tuo (Rice Balls) with Groundnut Soup": ["rice balls", "groundnut", "chicken", "tomatoes", "onions"]},
+                {"Pork with Garden Eggs": ["pork", "garden eggs", "tomatoes", "onions", "green pepper"]},
+                {"Keto Vegetable Soup": ["spinach", "tomato", "onion", "coconut oil", "fish"]},
+                {"Grilled Chicken with Avocado": ["chicken", "avocado", "tomatoes", "onions", "palm oil"]},
+                {"Grilled Snails with Garden Eggs": ["snails", "garden eggs", "onions", "tomatoes", "pepper"]}
+            ],
+            "paleo": [
+                {"Fried Fish with Cocoyam": ["fish", "cocoyam", "palm oil", "garlic", "onion"]},
+                {"Porridge with Millet": ["millet", "groundnut paste", "ginger", "sugar"]},
+                {"Bitterleaf Soup with Goat Meat": ["goat meat", "bitterleaf", "tomato", "onion", "palm oil"]},
+                {"Coconut Rice with Grilled Chicken": ["coconut", "rice", "chicken", "tomato", "onions"]},
+                {"Tuo Zaafi with Groundnut Soup": ["millet", "groundnut", "meat", "tomatoes", "palm oil"]},
+                {"Boiled Plantain with Fish Stew": ["plantain", "fish", "tomato", "onion", "spices"]}
+            ],
+            "omnivorous": [
+                {"Banku and Okra Soup": ["banku", "okra", "fish", "goat meat", "palm oil"]},
+                {"Grilled Chicken with Jollof Rice": ["chicken", "rice", "tomato paste", "onion", "plantain"]},
+                {"Beef Kebabs with Fried Yam": ["beef", "onion", "bell pepper", "yam", "spices"]},
+                {"Fried Rice with Chicken": ["rice", "chicken", "carrots", "peas", "onions"]},
+                {"Baked Chicken with Plantain": ["chicken", "plantain", "tomato", "onions", "palm oil"]},
+                {"Pork with Rice Balls": ["pork", "rice balls", "tomatoes", "onions", "green pepper"]}
+            ]
+        }
+
+        # Filter Meals
+        suggested_meals = meal_database.get(preference, meal_database["omnivorous"])
+        for allergen in allergies:
+            suggested_meals = [
+                meal for meal in suggested_meals
+                if allergen not in [ingredient for ingredients in meal.values() for ingredient in ingredients]
+            ]
+
+        # Select a Meal
+        if suggested_meals:
+            meal_choice = random.choice(suggested_meals)
+            meal_name = list(meal_choice.keys())[0]
+            meal_ingredients = ", ".join(list(meal_choice.values())[0])
+            meal_suggestion = f"{meal_name}\nIngredients: {meal_ingredients}"
+        else:
+            meal_suggestion = "Sorry, no suitable meal found based on your preferences."
+
+        # Display the Meal Suggestion in a Popup
+        popup_content = Label(text=f"Hi {name}, based on your input:\n\n{meal_suggestion}")
+        suggestion_popup = Popup(
+            title="Your Meal Suggestion",
+            content=popup_content,
+            size_hint=(0.8, 0.4),
+        )
+        suggestion_popup.open()
+
+
+
 
 class SymptomCheckerScreen(Screen):
     def __init__(self, **kwargs):
@@ -195,6 +308,9 @@ class Chat3Screen(Screen):
 
 class MedMateApp(App):
     def build(self):
+
+        
+
         sm = ScreenManager()
         sm.add_widget(PageScreen(name="page"))
         sm.add_widget(LoginScreen(name="login"))
@@ -205,6 +321,7 @@ class MedMateApp(App):
         sm.add_widget(NewsScreen(name="news"))
         sm.add_widget(PatientScreen(name="pat"))
         sm.add_widget(HomeScreen(name="home"))
+        sm.add_widget(ExtraScreen(name="Extra"))
         sm.add_widget(PatientProfileScreen(name="patientprofile"))
         sm.add_widget(EditPatientScreen(name="editpatient"))        
         sm.add_widget(ContactListScreen(name="contact_list"))
@@ -215,6 +332,10 @@ class MedMateApp(App):
         sm.add_widget(PatientsScreen(name="Patients"))
         sm.add_widget(PatientschatScreen(name="chat.1"))
         sm.add_widget(SymptomCheckerScreen(name="Sym"))
+        sm.add_widget(SignUpDocScreen(name="signup.doc"))
+        sm.add_widget(LoginDocScreen(name="login.doc"))
+        sm.add_widget(DieticianScreen(name="Dietician"))
+        
         return sm
 
 
