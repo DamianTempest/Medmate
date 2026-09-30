@@ -1,7 +1,7 @@
 import requests
 import json
 import os 
-def ask_dietician(message, user_profile=None, model="openai/gpt-3.5-turbo", api_key="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"):
+def ask_dietician(message, user_profile=None, model="openai/gpt-3.5-turbo", api_key="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"):
    
     url = "https://openrouter.ai/api/v1/chat/completions"
     

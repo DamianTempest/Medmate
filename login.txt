@@ -1,0 +1,42 @@
+from flask import Flask, request, jsonify
+from werkzeug.security import check_password_hash
+import hashlib
+
+app = Flask(__name__)
+
+# Simulate a user database
+users_db = {
+    "user@example.com": {
+        "password_hash": hashlib.sha256("password123".encode()).hexdigest(),
+        "name": "John Doe"
+    }
+}
+
+@app.route('/login', methods=['POST'])
+def login():
+    # Get email and password from request body
+    email = request.json.get('email')
+    password = request.json.get('password')
+
+    # Validate input
+    if not email or not password:
+        return jsonify({"error": "Both email and password are required!"}), 400
+
+    # Check if email exists in the database
+    user = users_db.get(email)
+    if not user:
+        return jsonify({"error": "Invalid email or password"}), 401
+
+    # Verify password (use hashed comparison in production)
+    if not check_password_hash(user['password_hash'], password):
+        return jsonify({"error": "Invalid email or password"}), 401
+
+    # Login successful, return user info and a token (JWT)
+    return jsonify({
+        "message": "Login successful",
+        "name": user["name"],
+        "token": "your-jwt-token-here"
+    }), 200
+
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -146,7 +146,7 @@ class HealthTips:
         return random.choice(self.tips)
 
 
-# Define the TipScreen class to display tips
+# Define the TipScreen class to display tips``
 class TipScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -267,44 +267,7 @@ class NxtScreen(Screen):
         # Update the country input field when the spinner is selected
         self.ids.country_input.text = text
 
-'''class NxtScreen(Screen):
-   def validate_Nxt(self):
-        # Check if IDs exist before accessing them
-        if not hasattr(self.ids, "name_input") or \
-           not hasattr(self.ids, "age_input") or \
-           not hasattr(self.ids, "country_input") or \
-           not hasattr(self.ids, "error_label"):
-            print("Error: One or more widget IDs are missing in the .kv file.")
-            return
-        
-        # Get user input and strip spaces
-        name = self.ids.name_input.text.strip()
-        age = self.ids.age_input.text.strip()
-        self.country_input = self.ids.country_input
-        self.preference_spinner = self.ids.preference_spinner
 
-        # Set the spinner values
-        self.preference_spinner.values = ["Ghana", "Nigeria", "Kenya", "South Africa", "Egypt", 
-                                          "France", "Germany", "Italy", "Spain", "United Kingdom",
-                                          "China", "India", "Japan", "South Korea", "Indonesia",
-                                          "USA", "Canada", "Mexico", "Brazil", "Argentina", 
-                                          "Colombia", "Australia", "New Zealand"]
-
-        # Bind the text of the spinner to the country_input's text
-        self.country_input.bind(text=self.update_spinner_text)
-
-            # Validate input
-        if not name or not age:
-            self.ids.error_label.text = "All fields are required!"
-            return
-        
-        self.ids.error_label.text = "Sign up successful!"
-        
-        # Ensure screen manager exists before switching screens
-        if self.manager:
-            self.manager.current = "home"
-        else:
-            print("Error: Screen manager is not set.")'''
             
 
 
@@ -380,7 +343,14 @@ class PatientsScreen(Screen):
     pass
 
 class PatientschatScreen(Screen):
-    pass
+     def send_message(self):
+        chat_input = self.ids.chat_input
+        chat_messages = self.ids.chat_messages
+
+        message = chat_input.text
+        if message.strip():
+            chat_messages.text += f"\nYou: {message}"
+            chat_input.text = ""
 
 class SignUpDocScreen(Screen):
     pass
@@ -580,7 +550,7 @@ class Chat1Screen(Screen):
             chat_messages.text += f"\nYou ({timestamp}): {message}"
             chat_input.text = ""
 
-            # Scroll to the latest message
+ # Scroll to the latest message
             chat_messages.parent.scroll_y = 0
 
 class Chat2Screen(Screen):

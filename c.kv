@@ -1,0 +1,58 @@
+ScreenManager:
+    UserInputScreen:
+    HealthResponseScreen:
+
+<UserInputScreen>:
+    name: "user_input"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        TextInput:
+            id: name
+            hint_text: "Enter your name"
+            multiline: False
+
+        Spinner:
+            id: gender
+            text: "Select Gender"
+            values: ["Male", "Female", "Other"]
+
+        TextInput:
+            id: age
+            hint_text: "Enter your age"
+            multiline: False
+            input_filter: "int"
+
+        TextInput:
+            id: allergies
+            hint_text: "Enter your allergies (comma-separated)"
+            multiline: False
+
+        TextInput:
+            id: medications
+            hint_text: "Enter your current medications (comma-separated)"
+            multiline: False
+
+        Button:
+            text: "Submit"
+            on_press: root.submit_details()
+
+<HealthResponseScreen>:
+    name: "health_response"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            id: response_label
+            text: "Health Insights will be shown here"
+            text_size: self.width, None
+            halign: "left"
+            valign: "top"
+
+        Button:
+            text: "Back to Input"
+            on_press: app.root.current = "user_input"

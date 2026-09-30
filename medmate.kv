@@ -15,7 +15,7 @@ ScreenManager:
     EditPatientScreen:
     SymptomCheckerScreen:
     ChatScreen:
-    DieticianScreen:
+    Dietician2Screen:
     ai_chatapp:
 
 <PageScreen>:
@@ -469,27 +469,18 @@ ScreenManager:
         Label:
             text: "Patients"
             font_size: sp(24)
-        RecycleView:
-            id: patient_list_rv
-            viewclass: "Button"
-            RecycleBoxLayout:
-                orientation: "vertical"
-                default_size: None, dp(40)
-                default_size_hint: 1, None
-                size_hint_y: None
-                height: self.minimum_height
-                Button:
-                    text: "Mr. Sam"
-                    on_press: app.root.current = "chat.1"
-                Button:
-                    text: "Mrs. "
-                    on_press: app.root.current = "chat.2"
-                Button:
-                    text: "Mr. Gunner"
-                    on_press: app.root.current = "chat.3"
-                Button:
-                    text: "Back"
-                    on_press: app.root.current = "nun"
+        Button:
+            text: "Mr. Smith"
+            on_press: app.root.current = "chat.1"
+        Button:
+            text: "Mrs. Jane"
+            on_press: app.root.current = "chat.2"
+        Button:
+            text: "Mr. Joe"
+            on_press: app.root.current = "chat.3"
+        Button:
+            text: "Back"
+            on_press: app.root.current = "nun"
 
 
 <PatientschatScreen>:
@@ -518,9 +509,6 @@ ScreenManager:
             Button:
                 text: "Send"
                 on_press: root.send_message()
-            Button:
-                text:"Back"
-                on_press:app.root.current="home"
 
             
 
@@ -604,7 +592,7 @@ ScreenManager:
             bold: True
             on_press: root.manager.current = 'ai_chatapp'
         Button:
-            text: "Sympt0ms Checker"
+            text: "Dietician"
             size_hint_y: None
             height: '70dp'
             halign: "center"
@@ -613,7 +601,7 @@ ScreenManager:
             background_normal: ''
             font_size: '18sp'
             bold: True
-            on_press: app.root.current = "Sym"
+            on_press: app.root.current = "Dietician"
         Button:
             text: "Back"
             background_color: 0.2, 0.6, 1, 1
@@ -876,79 +864,6 @@ ScreenManager:
                 on_release: app.root.current = "home"
 
 
-
-<SymptomCheckerScreen>:
-    name: "sym"
-    BoxLayout:
-        orientation: 'vertical'
-        padding: dp(20)
-        spacing: dp(15)
-        canvas.before:
-            Color:
-                rgba: 0.95, 0.95, 0.95, 1  # Light gray background
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-        BoxLayout:
-            size_hint_y: None
-            height: dp(50)
-            spacing: dp(10)
-            padding: dp(5)
-
-            Button:
-                text: "Back"
-                size_hint_x: None
-                width: dp(100)
-                background_color: 0.129, 0.588, 0.953, 1  # Blue (Hex #2196F3 converted to RGBA)
-                background_normal: ''
-                color: 1, 1, 1, 1  # White text
-                on_press: app.root.current = "Extra"
-
-            Label:
-                text: "Symptom Checker"
-                font_size: dp(20)
-                bold: True
-                color: 0, 0, 0, 1  # Black text
-                size_hint_x: 0.8
-
-            Label:
-                id: result_label
-                text: "Enter your symptoms (e.g., fever, headache, fatigue):"
-                size_hint_y: None
-                height: dp(30)
-                font_size: dp(16)
-                color: 0, 0, 0, 1  # Black text
-        TextInput:
-            id: symptom_input
-            hint_text: "Type your symptoms here..."
-            multiline: True
-            size_hint_y: 0.4
-            background_color: 1, 1, 1, 1  # White background
-            foreground_color: 0, 0, 0, 1  # Black text
-            padding: dp(10)
-            font_size: dp(16)
-
-        ProgressBar:
-            id: progress_bar
-            max: 100
-            value: 0
-            size_hint_y: None
-            height: dp(15)
-            background_color: 0.741, 0.741, 0.741, 1  # Light gray (Hex #BDBDBD converted to RGBA)
-            color: 0.129, 0.588, 0.953, 1  # Blue (Hex #2196F3 converted to RGBA)
-
-        Button:
-            text: "Analyze Symptoms"
-            size_hint_y: None
-            height: dp(50)
-            background_color: 0, 1, 0, 1  # Green
-            background_normal: ''
-            color: 1, 1, 1, 1  # White text
-            font_size: dp(18)
-            bold: True
-            on_press: root.Analyze_Symptoms(self)
-
            
 
 <ChatScreen>:
@@ -989,12 +904,6 @@ ScreenManager:
         orientation: "vertical"  # Use vertical layout for better readability
         spacing: dp(10)
         padding: dp(20)
-
-        Button:
-            text: "Back"
-            size_hint_y: None
-            height: dp(50)
-            on_press: app.root.current = "patientprofile"
         
         ScrollView:
             size_hint: 1, None
@@ -1025,51 +934,65 @@ ScreenManager:
                     size_hint_y: None
                     height: dp(40)
 
+        Button:
+            text: "Back"
+            size_hint_y: None
+            height: dp(50)
+            on_press: app.root.current = "patientprofile"
 
-# <DieticianScreen>:
-#     name: "Dietician"
-#     BoxLayout:
-#         orientation: "vertical"
-#         spacing: 10
-#         padding: 20
+<Dietician2Screen>:
+    name: "Dietician"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 20
 
-#         Label:
-#             text: "Enter your name:"
-#         TextInput:
-#             id: name_input
-#             hint_text: "Your Name"
+        Label:
+            text: "Enter your name:"
+        TextInput:
+            id: name_input
+            hint_text: "Your Name"
 
-#         Label:
-#             text: "Select your dietary preference:"
-#         Spinner:
-#             id: preference_spinner
-#             text: "Choose One"
-#             values: ["Vegetarian", "Vegan", "Keto", "Paleo", "Omnivorous"]
+        Label:
+            text: "Select your dietary preference:"
+        Spinner:
+            id: preference_spinner
+            text: "Choose One"
+            values: ["Vegetarian", "Vegan", "Keto", "Paleo", "Omnivorous"]
 
-#         Label:
-#             text: "List your allergies (comma-separated):"
-#         TextInput:
-#             id: allergies_input
-#             hint_text: "e.g., nuts, dairy"
+        Label:
+            text: "List your allergies (comma-separated):"
+        TextInput:
+            id: allergies_input
+            hint_text: "e.g., nuts, dairy"
 
-#         Label:
-#             text: "Select your health goal:"
-#         Spinner:
-#             id: goal_spinner
-#            text: "Choose One"
-#            values: ["Weight Loss", "Muscle Gain", "General Health"]
+        Label:
+            text: "Select your health goal:"
+        Spinner:
+            id: goal_spinner
+            text: "Choose One"
+            values: ["Weight Loss", "Muscle Gain", "General Health"]
+            halign: "center"
+            size_hint_y: None
+            height: dp(40)
 
-#        Button:
-#            text: "Get Meal Suggestion"
-#            size_hint: (1, 0.2)
-#            on_press: root.generate_suggestion()
+        Button:
+            text: "Get Meal Suggestion"
+            size_hint: (1, 0.2)
+            halign: "center"
+            size_hint_y: None
+            height: dp(40)
+            on_press: root.generate_suggestion()
 
-#        Button:
-#            text: "Back to Home"
-#            on_press: app.root.current = "home"
+        Button:
+            text: "Back"
+            halign: "center"
+            size_hint_y: None
+            height: dp(40)
+            on_press: app.root.current = "home"
 
 
-#        Button:
+#       Button:
 #            text:"Close"
 #            size_hint_y:None
 #            height:'40dp'
